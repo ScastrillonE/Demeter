@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Listado</h1>
+<table id="listar_cliente" class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Numero contacto</th>
+            <th>Opciones</th>
+        </tr>
+        </thead>
+</table>
+<script>
+    $(document).ready( function () {
+        $('#listar_cliente').DataTable({
+        scrollX: true,
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        ajax: {
+            url: window.location.pathname,
+            type: "GET",
+            dataType:"json",
+            dataSrc:"",
+        },
+        columns : [
+            {"data":"id"},
+            {"data":"name"},
+            {"data":"identification"},
+            {"data":"phone"},
+            {
+                data: 'options',
+                render: function(data,type,row){
+                        var buttons = '<div class=row>'+'<a href="/clientes/update/' + row.id + '/"class="btn btn-warning mr-1"><i class="fas fa-edit"></i></a>';
+                        buttons += '<a href="/clientes/delete/' + row.id + '/"class="btn btn-danger"><i class="fas fa-trash"></i></a>'+ '</div>';
+                        return buttons;
+                },
+
+            },
+        ],
+        initComplete: function(settings,json){
+
+        }
+
+    });
+    });
+    
+</script>
+{% endblock content %}

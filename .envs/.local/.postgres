@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=demeter
+POSTGRES_USER=BJgtkKNTQAlzHZdwMTAdVJeqmTmcEWpj
+POSTGRES_PASSWORD=5YUsa1hG7Q7FuN7AQ7JbI2dv9dY4GEHHQY7cmjQzWYNGgeEcXb1aw9LpFQDurkA5

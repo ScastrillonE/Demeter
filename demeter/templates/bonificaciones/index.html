@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content">
+    <div class="row">
+        <select id="clients_names" style="width: 100%;">
+            <option selected>Selecciones un cliente</option>
+        </select>
+    </div>
+</div>
+<div class="content">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Carton</span>
+                    <span id="k_carton" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Archivo</span>
+                    <span id="k_archivo" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Periodico</span>
+                    <span id="k_periodico" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Plega</span>
+                    <span id="k_plega" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Plastico</span>
+                    <span id="k_plastico" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Chatarra</span>
+                    <span id="k_chatarra" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Vidrio</span>
+                    <span id="k_vidrio" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Otros</span>
+                    <span id="k_otros" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total</span>
+                    <span id="k_total" class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+        //window.CSRF_TOKEN = "{{ csrf_token }}"; 
+        $('#clients_names').select2({
+            ajax: {
+                url: '/bonificaciones/lista/',
+                type:'POST',
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {id: item.id, text: item.name};
+                        })
+                    };
+                }
+            },
+            minimumInputLength: 3,
+        });
+        $('#clients_names').on('change',()=>{
+            let name = $('#clients_names').val()
+            const data = new FormData();
+            data.append('client_id', name);
+            data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            fetch('http://0.0.0.0:8000/bonificaciones/data/client/', {
+                method: 'POST',
+                body: data
+            })
+            .then(function(response) {
+                if(response.ok) {
+                    return response.json()
+                } else {
+                    throw "Error en la llamada Ajax";
+                }
+            })
+            .then(function(texto) {
+                let data = texto[0];
+                let carton = parseFloat(data.carton)
+                let archivo = parseFloat(data.archivo)
+                let periodico = parseFloat(data.periodico)
+                let plega = parseFloat(data.plega)
+                let plastico = parseFloat(data.plastico)
+                let chatarra = parseFloat(data.chatarra)
+                let vidrio = parseFloat(data.vidrio)
+                let otros = parseFloat(data.otros)
+                document.getElementById("k_carton").innerHTML=carton;
+                document.getElementById("k_archivo").innerHTML=archivo;
+                document.getElementById("k_periodico").innerHTML=periodico;
+                document.getElementById("k_plega").innerHTML=plega;
+                document.getElementById("k_plastico").innerHTML = plastico;
+                document.getElementById("k_chatarra").innerHTML = chatarra;
+                document.getElementById("k_vidrio").innerHTML = vidrio;
+                document.getElementById("k_otros").innerHTML = otros;
+                document.getElementById("k_total").innerHTML = carton + archivo + periodico + plega + plastico + chatarra + vidrio + otros; 
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+        });
+    });
+</script>
+{% endblock content%}
