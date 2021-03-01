@@ -9,7 +9,7 @@ class Ventas(models.Model):
     kilos = models.CharField('Kilos',max_length=200)
     unit_value = models.CharField('Valor unitario',max_length=200)
     purchase = models.CharField('Empresa a la que compra',max_length=200)
-    create = models.DateField(default=timezone.now())
+    create = models.DateField(blank=True)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
