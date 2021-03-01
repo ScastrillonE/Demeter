@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`excedentesitagui.com`) || Host(`www.excedentesitagui.com`)"
+      rule: "Host(`gestion.excedentesitagui.com`) || Host(`www.gestion.excedentesitagui.com`)"
       
       entryPoints:
         - web-secure
