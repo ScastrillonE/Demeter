@@ -44,6 +44,7 @@ class ComprasView(LoginRequiredMixin,CreateView):
 
     def post(self,request,*args,**kwargs):
         data = []
+        data_info ={}
         if request.is_ajax():
             data = []
             action = request.POST['action']
@@ -84,15 +85,15 @@ class ComprasView(LoginRequiredMixin,CreateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data.append({'success':'Guardado con exito'})
+                        data_info['success']='Guardado con exito'
                 except Exception as e:
-                    data.append({'error':e})
+                    data_info['error'] = e
 
 
             else:
-                return JsonResponse(data, safe=False)
+                return JsonResponse(data_info, safe=False)
 
-        return JsonResponse(data, safe=False)
+        return JsonResponse(data_info, safe=False)
         
 class ComprasListView(LoginRequiredMixin,ListView):
     model=Compra

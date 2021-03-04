@@ -156,10 +156,10 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data.append({'success':'Actualizado con exito'})
+                        data_info['success']='Actualizado con exito'
                 except Exception as e:
                     print(e)
-                    data.append({'error':e})
+                    data_info['error'] = e
 
 
             else:
