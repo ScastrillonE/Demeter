@@ -76,6 +76,7 @@ LOCAL_APPS = [
     "demeter.compras",
     "demeter.bonificaciones",
     "demeter.ventas",
+    "demeter.materiales"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

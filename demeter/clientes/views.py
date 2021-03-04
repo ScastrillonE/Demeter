@@ -22,7 +22,7 @@ class ClientListView(LoginRequiredMixin,ListView):
     def get(self,request,*arg,**kwargs):
         if request.is_ajax():
             data = []
-            for i in Client.objects.filter(active=True):
+            for i in Client.objects.all():
                 data.append(i.toJson())
                 print(data)
             return JsonResponse(data, safe=False)

@@ -2,20 +2,18 @@
 
 {% block content %}
 <h1>Listado</h1>
-<table id="listar_ventas" class="table table-hover">
+<table id="listar_material" class="table table-hover">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Comprador</th>
-            <th>Empresa a la que compro</th>
-            <th>Fecha</th>
+            <th>Nombre</th>
             <th>Opciones</th>
         </tr>
         </thead>
 </table>
 <script>
     $(document).ready( function () {
-        $('#listar_ventas').DataTable({
+        $('#listar_material').DataTable({
         scrollX: true,
         responsive: true,
         autoWidth: false,
@@ -29,14 +27,12 @@
         },
         columns : [
             {"data":"id"},
-            {"data":"buyer"},
-            {"data":"purchase"},
-            {"data":"creation_date"},
+            {"data":"name"},
             {
                 data: 'options',
                 render: function(data,type,row){
-                        var buttons = '<div class=row>'+'<a href="/ventas/update/' + row.id + '/"class="btn btn-warning mr-1"><i class="fas fa-edit"></i></a>';
-                        buttons += '<a href="/ventas/delete/' + row.id + '/"class="btn btn-danger"><i class="fas fa-trash"></i></a>'+ '</div>';
+                        var buttons = '<div class=row>'+'<a href="/material/update/' + row.id + '/"class="btn btn-warning mr-1"><i class="fas fa-edit"></i></a>';
+                        buttons += '<a href="/material/delete/' + row.id + '/"class="btn btn-danger"><i class="fas fa-trash"></i></a>'+ '</div>';
                         return buttons;
                 },
 

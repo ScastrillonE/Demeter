@@ -1,31 +1,305 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+<!-- {% block head_list %}
+    <link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet"/>
+    <script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
+    <link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+
+    <script src="{% static 'lib/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <link href="{% static 'lib/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet"/>
+
+    <link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"/>
+    <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
+    <script src="{% static 'sale/js/form.js' %}"></script>
+{% endblock %} -->
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h3>Registrar compra</h3>
-    </div>
-    <div class="card-body">
-        <form method="POST">
-            {%csrf_token%}
-            {{form}}
-            <button type="submit" class="btn btn-success mt-3">Guardar</button>
+    <input type="hidden" id="id_action" value="{{action}}">
+    <form id="frmSale" method="post">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {% if action == 'add' %}
+                        <i class="fas fa-plus"></i>
+                    {% else %}
+                        <i class="fas fa-edit"></i>
+                    {% endif %}
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-boxes"></i>Detalle de materiales</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Material:</label>
+                                    <div class="input-group">
+                                        <select id="id_material" class="form-select" style="width: 80%;" name="state"></select>
+                                        
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Opciones
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                
+                                                <button type="button" class="btn dropdown-item" data-toggle="modal" data-target="#myModalClient">
+                                                    <i class="fas fa-search"></i> Añadir nuevo material
+                                                  </button>
+                                                <!-- <a class="dropdown-item btnClearSearch">
+                                                    <i class="fas fa-times"></i> Otro
+                                                </a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" id="id_kilos" class="form-control m-1" autocomplete="off"#}
+    {#                                               placeholder="Digite los kilos" maxlength="50" name="n_kilos">
+                                        <input type="text" id="id_valor_uni" class="form-control m-1" autocomplete="off"#}
+    {#                                               placeholder="Digite el valor unitario" maxlength="50" name="valor_unitario">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <select id="id_bonus" style="width: 100%;" class="form-select" aria-label=".form-select-lg example">
+                                        <option value="0">No aplica</option>
+                                        <option value="1">Carton</option>
+                                        <option value="2">Archivo</option>
+                                        <option value="3">Periodico</option>
+                                        <option value="4">Plega</option>
+                                        <option value="5">Plastico</option>
+                                        <option value="6">Chatarra</option>
+                                        <option value="7">Vidrio</option>
+                                        <option value="8">Otros</option>
+                                      </select>
+                                </div>
+                             <a class="btn btn-success" id="id_agregar">
+                                 Agregar producto
+                             </a>
+                                <hr>
+                                <table class="table table-bordered" id="tblcompras">
+                                    <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Kilos</th>
+                                        <th>Valor unitario</th>
+                                        <th>Bonus</th>
+                                        <th>Total</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-shopping-cart"></i> Datos de la factura</h3>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" name="action" value="{{ action }}">
+                                <div class="form-group">
+                                    <label>Fecha de compra:</label>
+                                    {{ time_now }}
+                                </div>
+                                <div class="form-group">
+                                    <label>Cliente:</label>
+                                    <div class="input-group">
+                                        {% if action == 'update' %}
+                                            {{form.client_name}}
+                                        {% else %}
+                                            <select id="id_client_name" name="client_name"></select>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Total a pagar:</label>
+                                    <input type="text" id="id_total" name="total" value="0" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a id="id_btn_guardar" class="btn btn-primary btn-flat">
+                    <i class="fas fa-save"></i> Guardar registro
+                </a>
+                <a href="{{ list_url }}" class="btn btn-danger btn-flat">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModalClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <form id="frmClient" enctype="multipart/form-data" method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <b><i class="fas fa-user-plus"></i> Nuevo registro de un cliente</b>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for field in frmClient.visible_fields %}
+                            <div class="form-group">
+                                <label for="email">{{ field.label }}:</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                            <i class="fas fa-save"></i> Guardar Cliente
+                        </button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
-</div>
+    <div class="modal fade" id="myModalSearchProducts" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <b><i class="fas fa-search"></i> Búsqueda de Productos</b>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-hover" id="tblSearchProducts">
+                        <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Imagen</th>
+                            <th>Stock</th>
+                            <th>Precio Unitario</th>
+                            <th>Opciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/form.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            
+            {% if det %}
+                var data_table = JSON.parse('{{det|safe}}');
+                data_table["material"].forEach(element => {
+                    compras.add(data_table["cliente"],data_table["total"],element)
+                });
+                
+            {% endif %}
+            
+            
+            function calculate_total_material(){
+                let operacion = $("#id_kilos").val() * $("#id_valor_uni").val()
+                
+                return operacion;
+            }
 
-<script>
+            $("#id_agregar").on('click',()=>{
+                let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
+                
+                compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
+                $("#id_kilos").val(" ");
+                $("#id_valor_uni").val(" ");
+                $('#id_material').val(' ').trigger('change.select2');
+                $('#id_material').text(' ').trigger('change.select2');
 
-    let input_kilos = document.getElementById('id_kilos');
-    let input_unit = document.getElementById('id_unit_value');
+            });
 
-    input_kilos.onkeypress = function() { 
-        document.getElementById('id_total_value').value = parseFloat(input_kilos.value )* parseFloat(input_unit.value);
-    }
 
-    input_unit.onkeypress = function() { 
-        document.getElementById('id_total_value').value = parseFloat(input_kilos.value )* parseFloat(input_unit.value);
-    }
-    
-</script>
-{% endblock content%}
+            $('#id_material').select2({
+                theme: "bootstrap4",
+                language: 'es',
+                allowClear: true,
+                ajax: {
+                    delay: 250,
+                    type: 'POST',
+                    url: window.location.pathname,
+                    data: function (params) {
+                        var queryParameters = {
+                            term: params.term,
+                            action: 'search_materiales',
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                            return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    },
+                },
+                placeholder: 'Ingrese el material',
+                minimumInputLength: 1,
+            });
+            
+            $('#id_bonus').select2({
+                theme: 'bootstrap4',
+            });
+
+            $('#id_client_name').select2({
+                theme: "bootstrap4",
+                language: 'es',
+                allowClear: true,
+                ajax: {
+                    delay: 50,
+                    type: 'POST',
+                    url: window.location.pathname,
+                    data: function (params) {
+                        var queryParameters = {
+                            term: params.term,
+                            action: 'search_clients',
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                            return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    },
+                },
+                placeholder: 'Ingrese nombre o iniciales',
+                minimumInputLength: 1,
+            });
+        });
+        //vents.items.products = {{ det|safe }};
+        // Se removio el vents.list(); para calcular bien el iva en el editar. Revisar al final del archivo form.js se lo puso.
+    </script>
+{% endblock %}

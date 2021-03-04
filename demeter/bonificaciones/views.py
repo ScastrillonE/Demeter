@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from datetime import datetime, timedelta
 
 
-from demeter.compras.models import Compra
+from demeter.compras.models import Compra, DetCompra
 from demeter.clientes.models import Client
 
 # Create your views here.
@@ -46,42 +46,33 @@ def data_client(request):
         kilos_vidrio = 0
         kilos_otros = 0
         data = []
-        mes_actual = arrow.utcnow().format('MMMM', locale='es')
-        now = datetime.today()
-        if 'febrero' in mes_actual:
-            mes = now - timedelta(days=28)
-            mes = mes.strftime('%Y-%m-%d')
-        elif ['Abril' , 'junio', 'septiembre','noviembre'] in mes_actual:
-            mes = now - timedelta(days=30)
-            mes = mes.strftime('%Y-%m-%d')
-        elif ['Enero', 'marzo', 'mayo', 'julio', 'agosto', 'octubre', 'diciembre'] in mes_actual:
-            mes = now - timedelta(days=31)
-            mes = mes.strftime('%Y-%m-%d')
-
-            
-        
-        datos = Compra.objects.filter(creation_date__range=[mes, now],client_name__id = request.POST['client_id']).exclude(bonus='No_aplica')
-        
-        for i in datos:
-            print(i.creation_date)
-            if i.bonus == 'Carton':
-                kilos_carton = kilos_carton + float(i.kilos)
-            elif i.bonus == 'Archivo':
-                kilos_archivo = kilos_archivo + float(i.kilos)
-            elif i.bonus == 'Periodico':
-                kilos_periodico = kilos_periodico + float(i.kilos)
-            elif i.bonus == 'Plega':
-                kilos_plega = kilos_plega + float(i.kilos)
-            elif i.bonus == 'Plastico':
-                kilos_plastico= kilos_plastico + float(i.kilos)
-            elif i.bonus == 'Chatarra':
-                kilos_chatarra = kilos_chatarra + float(i.kilos)
-            elif i.bonus == 'Vidrio':
-                kilos_vidrio = kilos_vidrio + float(i.kilos)
-            elif i.bonus == 'Otros':
-                kilos_otros = kilos_otros + float(i.kilos)
 
         
+        query = Compra.objects.filter(client_name__id = request.POST['client_id'])
+        j=0
+        for j in range(0,len(query)):
+            querydet = DetCompra.objects.filter(compra = query[j]).exclude(bonus=0)
+
+            for i in querydet:
+                
+                if i.bonus == 1:
+                    kilos_carton = kilos_carton + float(i.kilos)
+                elif i.bonus == 2:
+                    kilos_archivo = kilos_archivo + float(i.kilos)
+                elif i.bonus == 3:
+                    kilos_periodico = kilos_periodico + float(i.kilos)
+                elif i.bonus == 4:
+                    kilos_plega = kilos_plega + float(i.kilos)
+                elif i.bonus == 5:
+                    kilos_plastico= kilos_plastico + float(i.kilos)
+                elif i.bonus == 6:
+                    kilos_chatarra = kilos_chatarra + float(i.kilos)
+                elif i.bonus == 7:
+                    kilos_vidrio = kilos_vidrio + float(i.kilos)
+                elif i.bonus == 8:
+                    kilos_otros = kilos_otros + float(i.kilos)
+
+        print(kilos_carton)
         data.append({'carton':format(float(kilos_carton), '0,.3f'),'archivo':format(float(kilos_archivo), '0,.3f'),'periodico':format(float(kilos_periodico), '0,.3f'),
         'plega':format(float(kilos_plega), '0,.3f'),'plastico':format(float(kilos_plastico), '0,.3f'),'chatarra':format(float(kilos_chatarra), '0,.3f'),'vidrio':format(float(kilos_vidrio), '0,.3f'),
         'otros':format(float(kilos_otros), '0,.3f')})

@@ -15,6 +15,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('clientes/',include('demeter.clientes.urls')),
     path('compras/',include('demeter.compras.urls')),
+    path('material/',include('demeter.materiales.urls')),
     path('bonificaciones/', include('demeter.bonificaciones.urls')),
     path('ventas/',include('demeter.ventas.urls')),
     # Your stuff: custom urls includes go here

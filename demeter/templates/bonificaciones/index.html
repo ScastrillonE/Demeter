@@ -1,114 +1,215 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="content">
-    <div class="row">
-        <select id="clients_names" style="width: 100%;">
-            <option selected>Selecciones un cliente</option>
-        </select>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">
+            Bonificaciones
+        </h3>
     </div>
-</div>
-<div class="content">
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Carton</span>
-                    <span id="k_carton" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-boxes"></i>Bonificaciones</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Carton</span>
+                                        <span id="k_carton" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Archivo</span>
-                    <span id="k_archivo" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Archivo</span>
+                                        <span id="k_archivo" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Periodico</span>
-                    <span id="k_periodico" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Periodico</span>
+                                        <span id="k_periodico" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Plega</span>
-                    <span id="k_plega" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Plega</span>
+                                        <span id="k_plega" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Plastico</span>
-                    <span id="k_plastico" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Plastico</span>
+                                        <span id="k_plastico" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Chatarra</span>
-                    <span id="k_chatarra" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Chatarra</span>
+                                        <span id="k_chatarra" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Vidrio</span>
-                    <span id="k_vidrio" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Otros</span>
-                    <span id="k_otros" class="info-box-number">0</span>
-                </div>
-            </div>
-        </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Vidrio</span>
+                                        <span id="k_vidrio" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Otros</span>
+                                        <span id="k_otros" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="info-box bg-gradient-warning">
-                <span class="info-box-icon"><i class="far fa-copy"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total</span>
-                    <span id="k_total" class="info-box-number">0</span>
+                            <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box bg-gradient-warning">
+                                    <span class="info-box-icon"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Total</span>
+                                        <span id="k_total" class="info-box-number">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-plus"></i>Seleccione para bonificacion </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Cliente:</label>
+                            <div class="input-group">
+                                <select name="clients" id="id_clients" style="width: 90%;"></select>
+                            </div>
+                        </div>
+
+                        <input type="text" name="daterange" value="" />
+                        <a href="" class="btn btn-success">Filtrar</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
-  $(document).ready(function () {
-        //window.CSRF_TOKEN = "{{ csrf_token }}"; 
-        $('#clients_names').select2({
+    $(document).ready(function () {
+        moment.locale('es');
+        $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'YYYY-MM-DD',
+                "applyLabel": "Aplicar",
+                "daysOfWeek": [
+                    "DO",
+                    "LU",
+                    "MA",
+                    "MI",
+                    "JU",
+                    "VI",
+                    "SA"
+                ],
+                
+            }   
+        });
+
+        if ($("#id_clients").val() == null){
+            $('input[name="daterange"]').prop( "disabled", true );
+        }
+        $("#id_clients").on('change',()=>{
+            if ($("#id_clients").val() != null){
+                $('input[name="daterange"]').prop( "disabled", false );
+            }
+        });
+        $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+            var fecha_inicio = picker.startDate.format('YYYY-MM-DD');
+            var fecha_fin = picker.endDate.format('YYYY-MM-DD');
+            var name = $("#id_clients").val();
+            const data = new FormData();
+            data.append('client_id', name);
+            data.append('inicio',fecha_inicio);
+            data.append('fin', fecha_fin);
+            data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            fetch('http://0.0.0.0:8000/bonificaciones/data/client/', {
+                method: 'POST',
+                body: data
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        throw "Error en la llamada Ajax";
+                    }
+                })
+                .then(function (texto) {
+                    let data = texto[0];
+                    let carton = parseFloat(data.carton)
+                    let archivo = parseFloat(data.archivo)
+                    let periodico = parseFloat(data.periodico)
+                    let plega = parseFloat(data.plega)
+                    let plastico = parseFloat(data.plastico)
+                    let chatarra = parseFloat(data.chatarra)
+                    let vidrio = parseFloat(data.vidrio)
+                    let otros = parseFloat(data.otros)
+                    document.getElementById("k_carton").innerHTML = carton;
+                    document.getElementById("k_archivo").innerHTML = archivo;
+                    document.getElementById("k_periodico").innerHTML = periodico;
+                    document.getElementById("k_plega").innerHTML = plega;
+                    document.getElementById("k_plastico").innerHTML = plastico;
+                    document.getElementById("k_chatarra").innerHTML = chatarra;
+                    document.getElementById("k_vidrio").innerHTML = vidrio;
+                    document.getElementById("k_otros").innerHTML = otros;
+                    document.getElementById("k_total").innerHTML = carton + archivo + periodico + plega + plastico + chatarra + vidrio + otros;
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+
+        });
+
+        $('#id_clients').select2({
             ajax: {
                 url: '/bonificaciones/lista/',
-                type:'POST',
+                type: 'POST',
                 dataType: 'json',
                 data: function (params) {
                     var query = {
@@ -121,52 +222,12 @@
                 processResults: function (data) {
                     return {
                         results: $.map(data, function (item) {
-                            return {id: item.id, text: item.name};
+                            return { id: item.id, text: item.name };
                         })
                     };
                 }
             },
             minimumInputLength: 3,
-        });
-        $('#clients_names').on('change',()=>{
-            let name = $('#clients_names').val()
-            const data = new FormData();
-            data.append('client_id', name);
-            data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-            fetch('http://0.0.0.0:8000/bonificaciones/data/client/', {
-                method: 'POST',
-                body: data
-            })
-            .then(function(response) {
-                if(response.ok) {
-                    return response.json()
-                } else {
-                    throw "Error en la llamada Ajax";
-                }
-            })
-            .then(function(texto) {
-                let data = texto[0];
-                let carton = parseFloat(data.carton)
-                let archivo = parseFloat(data.archivo)
-                let periodico = parseFloat(data.periodico)
-                let plega = parseFloat(data.plega)
-                let plastico = parseFloat(data.plastico)
-                let chatarra = parseFloat(data.chatarra)
-                let vidrio = parseFloat(data.vidrio)
-                let otros = parseFloat(data.otros)
-                document.getElementById("k_carton").innerHTML=carton;
-                document.getElementById("k_archivo").innerHTML=archivo;
-                document.getElementById("k_periodico").innerHTML=periodico;
-                document.getElementById("k_plega").innerHTML=plega;
-                document.getElementById("k_plastico").innerHTML = plastico;
-                document.getElementById("k_chatarra").innerHTML = chatarra;
-                document.getElementById("k_vidrio").innerHTML = vidrio;
-                document.getElementById("k_otros").innerHTML = otros;
-                document.getElementById("k_total").innerHTML = carton + archivo + periodico + plega + plastico + chatarra + vidrio + otros; 
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
         });
     });
 </script>

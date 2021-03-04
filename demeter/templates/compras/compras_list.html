@@ -7,16 +7,16 @@
         <tr>
             <th>ID</th>
             <th>Nombre cliente</th>
-            <th>Material</th>
-            <th>Kilos</th>
-            <th>Valor unitario</th>
             <th>Total</th>
+            <th>Fecha</th>
             <th>Opciones</th>
         </tr>
         </thead>
 </table>
+
 <script>
     $(document).ready( function () {
+        
         $('#listar_compras').DataTable({
         scrollX: true,
         responsive: true,
@@ -32,15 +32,15 @@
         columns : [
             {"data":"id"},
             {"data":"client.name"},
-            {"data":"material"},
-            {"data":"kilos"},
-            {"data":"unit_value"},
             {"data":"total_value"},
+            {"data":"creation_date"},
             {
                 data: 'options',
                 render: function(data,type,row){
                         var buttons = '<div class=row>'+'<a href="/compras/update/' + row.id + '/"class="btn btn-warning mr-1"><i class="fas fa-edit"></i></a>';
                         buttons += '<a href="/compras/delete/' + row.id + '/"class="btn btn-danger"><i class="fas fa-trash"></i></a>'+ '</div>';
+                        buttons += '<a href="/compras/pdf/' + row.id + '/"class="btn btn-success"><i class="fas fa-print"></i></a>'+ '</div>';
+
                         return buttons;
                 },
 
