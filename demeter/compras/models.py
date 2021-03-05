@@ -22,8 +22,8 @@ from demeter.materiales.models import Material
 class Compra(models.Model):
     client_name = models.ForeignKey(Client, on_delete=models.CASCADE)
     total_value = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
-    creation_date = models.DateField('Fecha creacion',blank=True)
-    modified= models.DateField('Fecha modificacion',blank=True)
+    creation_date = models.DateField('Fecha creacion',blank=True,null=True)
+    modified= models.DateField('Fecha modificacion',blank=True,null=True)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
