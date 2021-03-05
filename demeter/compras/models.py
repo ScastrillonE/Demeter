@@ -45,8 +45,8 @@ class DetCompra(models.Model):
     unit_value = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     bonus = models.IntegerField(default=0)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
-    creation_date = models.DateField('Fecha creacion',blank=True)
-    modified= models.DateField('Fecha modificacion',blank=True)
+    creation_date = models.DateField('Fecha creacion',blank=True,null=True)
+    modified= models.DateField('Fecha modificacion',blank=True,null=True)
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''

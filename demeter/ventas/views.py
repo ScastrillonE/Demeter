@@ -117,6 +117,7 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
     
     def post(self,request,*args,**kwargs):
         data = []
+        data_info ={}
         if request.is_ajax():
             data = []
             action = request.POST['action']
