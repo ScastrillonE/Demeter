@@ -151,7 +151,9 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                         compra.total_value = datos['total']
                         compra.save()
 
-                        compra.compratodet.all().delete()
+                        #compra.compratodet.all().delete()
+                        detalle = DetCompra.objects.filter(compra=compra)
+                        detalle.delete()
                         for material in datos['material']:
 
                             detalle_compra = DetCompra()
@@ -165,7 +167,9 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
 
                             detalle_compra.save()
 
-                        compra.representa.all().delete()
+                        #compra.representa.all().delete()
+                        represen = Representation.objects.filter(compra=compra)
+                        represen.delete()
                         representation = Representation()
                         representation.compraRepresentation = compra
                         representation.representation = request.POST['representation']
