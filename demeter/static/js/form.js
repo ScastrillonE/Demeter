@@ -149,7 +149,7 @@ document.getElementById('id_btn_guardar').addEventListener('click',function guar
         }
     })
     .then((data)=>{
-        alert(data[0]["success"]);
+        alert(data["success"]);
     })
     .catch(function(err) {
         console.log(err);
