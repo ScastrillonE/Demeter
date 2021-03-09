@@ -129,6 +129,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
     
     def post(self,request,*args,**kwargs):
         data = []
+        data_info ={}
         if request.is_ajax():
             data = []
             action = request.POST['action']
@@ -168,28 +169,28 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                             detalle_compra.save()
 
                         #compra.representa.all().delete()
-                        represen = Representation.objects.filter(compra=compra)
+                        represen = Representation.objects.filter(compraRepresentation=compra)
                         represen.delete()
                         representation = Representation()
                         representation.compraRepresentation = compra
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data.append({'success':'Actualizado con exito'})
+                        data_info['success']='Guardado con exito'
+
                 except Exception as e:
-                    print(e)
-                    data.append({'error':e})
+                        data_info['error'] = e
 
 
             else:
-                return JsonResponse(data, safe=False)
+                return JsonResponse(data_info, safe=False)
 
-        return JsonResponse(data, safe=False)
+        return JsonResponse(data_info, safe=False)
             
     
 class ComprasDeleteView(LoginRequiredMixin,DeleteView):
     model = Compra
-    success_url = reverse_lazy('list_Compra')
+    success_url = reverse_lazy('compra_list')
     template_name = 'compras/delete.html'
     context_object_name = 'obj'
 
