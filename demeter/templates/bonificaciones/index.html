@@ -169,7 +169,7 @@
             data.append('inicio',fecha_inicio);
             data.append('fin', fecha_fin);
             data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-            fetch('http://0.0.0.0:8000/bonificaciones/data/client/', {
+            fetch('/bonificaciones/data/client/', {
                 method: 'POST',
                 body: data
             })

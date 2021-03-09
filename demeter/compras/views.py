@@ -176,7 +176,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data_info['success']='Guardado con exito'
+                        data_info['success']='Actualizado con exito'
 
                 except Exception as e:
                         data_info['error'] = e
