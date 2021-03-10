@@ -1,176 +1,186 @@
-{% load static%}
-<!doctype html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <link href="{% static 'css/invoice.css' %}" media="print" rel="stylesheet">
-    <title>Factura</title>
-</head>
-
 <style>
+    .print-container {
+        max-width: 900px;
+        margin: 30px auto;
+        background: white;
+        padding: 10px 30px;
+    }
 
-html {
-    color: #14213d;
-    font-family: Source Sans Pro;
-    font-size: 11pt;
-    line-height: 1.6;
-}
+    .print-container .header {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #dbdbdb;
+        padding-bottom: 20px;
+    }
 
-html body {
-    margin: 0;
-}
+    .print-container table {
+        margin-top: 30px;
+    }
 
-html h1 {
-    color: #03318C;
-    font-family: Pacifico;
-    font-size: 20pt;
-    margin: 0;
-}
+    .print-container table tbody tr.no-border:first-child {
+        opacity: 0.6 !important;
+    }
 
-html aside {
-    display: flex;
-    margin: 2em 0 4em;
-}
+    .print-container .summary-table {
+        border: 1px solid #DDE1E4;
+    }
 
-html aside address {
-    font-style: normal;
-    white-space: pre-line;
-}
+    .print-container .summary-table tr td:last-child {
+        text-align: right;
+    }
 
-html aside address#from {
-    color: #a9a;
-    flex: 1;
-}
+    .print-container .summary-table tr th:last-child {
+        text-align: right;
+    }
 
-html aside address#to {
-    text-align: right;
-}
+    .print-container .summary-table td {
+        border-left: 1px solid #dbdbdb;
+    }
 
-html dl {
-    text-align: right;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
+    .print-container .summary-table th {
+        border-left: 1px solid #dbdbdb;
+    }
 
-html dl dt,
-html dl dd {
-    display: inline;
-    margin: 0;
-}
+    .print-container .summary-table thead {
+        color: #737F8B;
+        text-transform: uppercase;
+    }
 
-html dl dt {
-    color: #a9a;
-}
+    .print-container .ft-18 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
 
-html dl dt::before {
-    content: '';
-    display: block;
-}
+    .print-container .adder {
+        font-size: 16px;
+        font-weight: 500;
+        text-align: right;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+    }
 
-html dl dt::after {
-    content: ':';
-}
+    .print-container .total {
+        font-size: 22px;
+    }
 
-html table {
-    border-collapse: collapse;
-    width: 100%;
-}
+    .print-container .mega {
+        font-size: 33px;
+        margin-bottom: 10px;
+    }
 
-html table th {
-    border-bottom: .2mm solid #a9a;
-    color: #a9a;
-    font-size: 10pt;
-    font-weight: 400;
-    padding-bottom: .25cm;
-    text-transform: uppercase;
-}
+    .invoice-logo {
+        height: 80px;
+        width: auto;
+    }
 
-html table td {
-    padding-top: 7mm;
-}
+    .other-rates {
+        float: right;
+        width: 350px;
+        text-align: right;
+    }
 
-html table td:last-of-type {
-    color: #1ee494;
-    font-weight: bold;
-    text-align: right;
-}
+    .other-rates dl {
+        width: 100%;
+        margin-bottom: 5px;
+    }
 
-html table th,
-html table td {
-    text-align: center;
-}
+    .other-rates dl.total {
+        border-top: 1px solid #dbdbdb;
+        padding-top: 10px;
+    }
 
-html table th:first-of-type,
-html table td:first-of-type {
-    text-align: left;
-}
+    .other-rates dt {
+        width: 50%;
+        float: left;
+    }
 
-html table th:last-of-type,
-html table td:last-of-type {
-    text-align: right;
-}
+    .other-rates dd {
+        width: 50%;
+        float: left;
+        padding-right: 10px;
+        margin: 0;
+    }
 
-html table #total {
-    background: #f6f6f6;
-    border-color: #f6f6f6;
-    border-style: solid;
-    border-width: 2cm 3cm;
-    bottom: 0;
-    font-size: 20pt;
-    margin: 0 -3cm;
-    position: absolute;
-    width: 18cm;
-}
+    .invoice-from {
+        float: right;
+    }
+
+    .summary-info {
+        border-bottom: 1px solid #dbdbdb;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+
+    @media print {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: bold;
+        }
+
+        h1:first-letter,
+        h2:first-letter,
+        h3:first-letter,
+        h4:first-letter,
+        h5:first-letter,
+        h6:first-letter {
+            font-size: inherit;
+        }
+    }
 </style>
+<div class="print-container clearfix">
+    <div class="header">
+        <div class="content">
+            <table style="width:100%">
+                <tr style="width:100%" class="heading">
+                    <td class="text-right">
+                        <div class="invoice-from" style="max-width:400px">
+                            <h3 class="mega">Excedentes Itagui</h3>
+                            <p><span style="font-size: 16px;">Fecha: </span> <span style="font-size: 13px;">{{fecha}}</span> <span style="font-size: 16px;">Nombre cliente: </span>
+                                <span style="font-size: 13px;">{{client}}</span> </p>
 
-<body>
-    <h1>EXCEDENTES ITAGUI S.A.S</h1>
+                        </div>
 
-    <dl id="informations">
-        <dt>FECHA</dt>
-        <dd>{{ fecha }}</dd>
-        <dt>NOMBRE EMPRESA</dt>
-        <dd>{{client}}</dd>
-    </dl> 
-
-    <table>
-        <thead>
-            <th>DETALLE</th>
-            <th>KILOS</th>
-            <th>VALOR UNIT.</th>
-            <th>TOTAL</th>
-        </thead>
-        <tbody>
-            {% for i in data %}
-                <tr>
-                    <td>{{ i.material.name }}</td>
-                    <td>{{ i.kilos }}</td>
-                    <td>{{ i.unit_value }}</td>
-                    <td>{{ i.total }}</td>
+                    </td>
                 </tr>
-            {% endfor %}
-            
-        
-        </tbody>
-    </table>
+            </table>
+        </div>
+    </div>
+    <div class="body">
+        <div class="summary-info">
+            <table class="table summary-table">
+                <thead>
+                    <tr>
+                        <th>DETALLE</th>
+                        <th>KILOS</th>
+                        <th>VALOR UNIT.</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                        <tr>
+                            <td>{{ i.material.name }}</td>
+                            <td>{{ i.kilos }}</td>
+                            <td>{{ i.unit_value }}</td>
+                            <td>{{ i.total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                        <dl class="dl-horizontal total clearfix">
+                            <dt class="blue">Total: ${{ total }}</dt>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table id="total">
-        <thead>
-            <th></th>
-            <th></th>
-            <th>Total</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>{{ total }}</td>
-            </tr>
-        </tbody>
-    </table>
-    
-</body>
-
-</html>
+</div>

@@ -166,6 +166,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
                             detalle_compra.bonus = material['bonus']
+                            detalle_compra.total = material['total']
 
                             detalle_compra.save()
                             
@@ -208,6 +209,7 @@ class CompraInvoiceView(LoginRequiredMixin, View):
     def get(self,request,*args,**kwargs):
         context = {}
         query = DetCompra.objects.filter(compra_id = self.kwargs['pk'])
+        print(query[0])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
         template = get_template('compras/invoice.html')
         context['data'] = query
