@@ -226,15 +226,36 @@
                 
                 return operacion;
             }
-
-            $("#id_agregar").on('click',()=>{
-                let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
+            document.addEventListener('keypress',(e)=>{
+                if(e.keyCode == 13){
+                    if($('#id_material').val() == null || $("#id_kilos").val()==null || $("#id_valor_uni").val() == null){
+                        alert("El campo material kilos y valor unitario debe tener un valor")
+                    }else{
+                        let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
                 
-                compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
-                $("#id_kilos").val(" ");
-                $("#id_valor_uni").val(" ");
-                $('#id_material').val(' ').trigger('change.select2');
-                $('#id_material').text(' ').trigger('change.select2');
+                        compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
+                        $("#id_kilos").val(" ");
+                        $("#id_valor_uni").val(" ");
+                        $('#id_material').val(' ').trigger('change.select2');
+                        $('#id_material').text(' ').trigger('change.select2');
+
+                    }
+                    
+                }
+            });
+            $("#id_agregar").on('click',()=>{
+                if($('#id_material').val() == null || $("#id_kilos").val()==null || $("#id_valor_uni").val() == null){
+                    alert("El campo material kilos y valor unitario debe tener un valor")
+                }else{
+                        let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
+                
+                        compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
+                        $("#id_kilos").val(" ");
+                        $("#id_valor_uni").val(" ");
+                        $('#id_material').val(' ').trigger('change.select2');
+                        $('#id_material').text(' ').trigger('change.select2');
+
+                    }
 
             });
 

@@ -86,6 +86,7 @@ class ComprasView(LoginRequiredMixin,CreateView):
                         representation.save()
 
                         data_info['success']='Guardado con exito'
+                        data_info['id_guardado'] = compra.id
                 except Exception as e:
                     data_info['error'] = e
 
