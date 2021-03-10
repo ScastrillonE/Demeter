@@ -211,7 +211,7 @@
     <script src="{% static 'js/form.js' %}"></script>
     <script>
         $(document).ready(function() {
-            
+
             {% if det %}
                 var data_table = JSON.parse('{{det|safe}}');
                 data_table["material"].forEach(element => {
@@ -228,36 +228,42 @@
             }
             document.addEventListener('keypress',(e)=>{
                 if(e.keyCode == 13){
-                    if($('#id_material').val() == null || $("#id_kilos").val()==null || $("#id_valor_uni").val() == null){
-                        alert("El campo material kilos y valor unitario debe tener un valor")
-                    }else{
-                        let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
-                
-                        compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
-                        $("#id_kilos").val(" ");
-                        $("#id_valor_uni").val(" ");
-                        $('#id_material').val(' ').trigger('change.select2');
-                        $('#id_material').text(' ').trigger('change.select2');
-
+                    if(verificar_campos()){
+                        alert("Verifica el campo material,kilos o valor unitario, no deben estar vacios");
+                    }
+                    else{
+                        añadir_a_lista();
                     }
                     
                 }
             });
             $("#id_agregar").on('click',()=>{
-                if($('#id_material').val() == null || $("#id_kilos").val()==null || $("#id_valor_uni").val() == null){
-                    alert("El campo material kilos y valor unitario debe tener un valor")
-                }else{
-                        let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
-                
-                        compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
-                        $("#id_kilos").val(" ");
-                        $("#id_valor_uni").val(" ");
-                        $('#id_material').val(' ').trigger('change.select2');
-                        $('#id_material').text(' ').trigger('change.select2');
-
-                    }
-
+                if(verificar_campos()){
+                    alert("Verifica el campo material,kilos o valor unitario, no deben estar vacios");
+                }
+                else{
+                    añadir_a_lista();
+                }
             });
+
+            function verificar_campos(){
+                let material = $('#id_material').val(), kilos = $("#id_kilos").val(), valor_uni = $("#id_valor_uni").val()
+                if(material == null || material == "" || material == " " || kilos == null || kilos == ""  || kilos == " " || valor_uni == null || valor_uni == "" || valor_uni == " "){
+                    return true
+                }else{
+                    return false
+                }
+            }
+
+            function añadir_a_lista(){
+                let id = $('#id_material').val(), name = $('#id_material').text()  , kilos = $("#id_kilos").val() , valor_uni = $("#id_valor_uni").val() , bonus_id = $("#id_bonus").val(), bonus_text = $("#id_bonus").find('option:selected').text();
+                
+                compras.add('',0,{'id':id,name:name,kilos:kilos,valor_uni:valor_uni,bonus:bonus_id, bonus_text :bonus_text, total:calculate_total_material()})
+                $("#id_kilos").val(null);
+                $("#id_valor_uni").val(null);
+                $('#id_material').val(null).trigger('change.select2');
+                $('#id_material').text(null).trigger('change.select2');
+            }
 
 
             $('#id_material').select2({
