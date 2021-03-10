@@ -168,6 +168,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                             detalle_compra.bonus = material['bonus']
 
                             detalle_compra.save()
+                            
 
                         #compra.representa.all().delete()
                         represen = Representation.objects.filter(compraRepresentation=compra)
@@ -178,6 +179,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                         representation.save()
 
                         data_info['success']='Actualizado con exito'
+                        data_info['id_guardado'] = compra.id
 
                 except Exception as e:
                         data_info['error'] = e
