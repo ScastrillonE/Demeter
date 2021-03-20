@@ -197,13 +197,13 @@ class ComprasDeleteView(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy('compra_list')
     template_name = 'compras/delete.html'
     context_object_name = 'obj'
-
+""" 
     def delete(self,request,*args,**kwargs):
         self.object = self.model.objects.get(id=self.kwargs['pk'])
         self.object.active = False
         self.object.save()
         success_url = self.get_success_url()
-        return HttpResponseRedirect(success_url)
+        return HttpResponseRedirect(success_url) """
 
 class CompraInvoiceView(LoginRequiredMixin, View):
     def get(self,request,*args,**kwargs):

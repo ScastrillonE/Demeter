@@ -41,10 +41,10 @@ class ClientDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'clientes/delete.html'
     context_object_name = 'obj'
 
-    def delete(self,request,*args,**kwargs):
+    """ def delete(self,request,*args,**kwargs):
         self.object = self.model.objects.get(id=self.kwargs['pk'])
         self.object.active = False
         self.object.save()
         success_url = self.get_success_url()
-        return HttpResponseRedirect(success_url)
+        return HttpResponseRedirect(success_url) """
         
