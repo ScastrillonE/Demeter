@@ -3,22 +3,47 @@
         size: A4 landscape;
         margin: 30px;
     }
+    p{
+        margin-bottom: -40px;
+    }
+    .center-td{
+        text-align: center;
+        font-size: 15px;
+        }
+    .item{
+        padding: 1px;
+        padding-top: 2px;
+    }
+    @media print {
+        p{
+            margin-bottom: 40px;
+        }
+        .center-td{
+            position: relative;
+
+            text-align: center;
+            font-size: 15px;
+        }
+        .item{
+            padding: 1px;
+        }
+    }
 </style>
 </head>
 
 <body>
-    <p style="font-size: 45px; margin-bottom:-40px;text-align: center;">Excedentes Itagui</p>
+    <p style="font-size: 45px;text-align: center;">Excedentes Itagui</p>
 
     <table>
         <tr>
-            <td style="font-size: 10px; text-align: center;">
+            <td class="center-td" style="font-size: 15px; text-align: center;">
                 Fecha: {{fecha}}
             </td>
-            <td style="font-size: 10px; text-align: center;">Cliente: {{client}}</td>
+            <td class="center-td" style="font-size: 15px; text-align: center;">Cliente: {{client}}</td>
         </tr>
     </table>
 
-    <table border="1px">
+    <table border="1px" style="width: 100%;">
         <tr class="heading">
             <td>DETALLE</td>
             <td>KILOS</td>
@@ -38,5 +63,10 @@
     <p style="position:relative; float: right;">Total: ${{total}}</p>
     </div>
 </body>
-
+<script>
+    window.print()
+    setTimeout(()=>{
+        window.location.href = "/compras/create"
+    },300);
+</script>
 </html>

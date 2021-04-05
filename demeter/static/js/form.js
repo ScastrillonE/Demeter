@@ -187,7 +187,7 @@ document.getElementById('id_btn_guardar').addEventListener('click',function guar
     .then((data)=>{
         alert(data["success"]);
         let id = data['id_guardado']
-        location.href="/compras/pdf/" + id + "/"
+        location.href="/compras/pdf/print/" + id + "/"
     })
     .catch(function(err) {
         console.log(err);
