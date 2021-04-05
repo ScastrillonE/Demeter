@@ -59,6 +59,7 @@ class ComprasView(LoginRequiredMixin,CreateView):
             action = request.POST['action']
             if action == 'save':
                 datos = json.loads(request.POST['datos'])
+                
                 try:
                     with transaction.atomic():
                         cliente = Client.objects.get(id=datos['cliente'])
@@ -71,12 +72,11 @@ class ComprasView(LoginRequiredMixin,CreateView):
 
                             detalle_compra = DetCompra()
                             material_id = Material.objects.get(id=material['id'])
-
                             detalle_compra.compra = compra
                             detalle_compra.material =  material_id
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
-                            detalle_compra.bonus = material['bonus']
+                            detalle_compra.bonus = self.validar_bonus(material_id)
                             detalle_compra.total = material['total']
                             detalle_compra.save()
                         
@@ -88,13 +88,33 @@ class ComprasView(LoginRequiredMixin,CreateView):
                         data_info['success']='Guardado con exito'
                         data_info['id_guardado'] = compra.id
                 except Exception as e:
-                    data_info['error'] = e
+                    data_info['error'] = str(e)
 
 
             else:
                 return JsonResponse(data_info, safe=False)
 
         return JsonResponse(data_info, safe=False)
+
+    def validar_bonus(self,name):
+        if str(name) == 'CARTON':
+            return 1
+        elif str(name) == 'ARCHIVO':
+            return 2
+        elif str(name) == 'PERIODICO':
+            return 3
+        elif str(name) == 'PLEGA':
+            return 4
+        elif str(name) == 'PLASTICO':
+            return 5
+        elif str(name) == 'CHATARRA':
+            return 6
+        elif str(name) == 'VIDRIO':
+            return 7
+        elif str(name) == 'PASTAS':
+            return 8
+        
+        return 0
         
 class ComprasListView(LoginRequiredMixin,ListView):
     model=Compra
