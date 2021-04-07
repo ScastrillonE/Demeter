@@ -74,6 +74,16 @@ var compras = {
             compras.add('',0,it);
         }
     },
+    insertar_valores_update: (list_material) => {
+        var table = document.getElementById("tablaprueba");
+        table.deleteRow(1);
+        list_material.forEach(element => {
+            table.insertRow(-1).innerHTML = `<td><select class="material_select" style="width: 90px;">  <option value="${element['id']}" selected>${element['name']}</option></select></td><td><input type="text" size=10 onkeyup="calcular_total_unitario(this)" value=${element['valor_uni']}></input></td><td><input type="text" size=10 onkeyup="calcular_total_unitario(this)" value=${element['kilos']}></input></td><td><input disabled type="text" size=6 value=${element['total']}></input></td><td><button type="button" class="btn btn-primary" onclick="compras.agregar_fila()">G</button></td>`;
+            compras.agregar();
+        });
+        compras.calculate_total();
+        
+    },
     agregar: () => {
         $('.material_select').select2({
             theme: "bootstrap4",

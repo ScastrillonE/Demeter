@@ -165,9 +165,8 @@
             compras.agregar_fila();
             {% if det %}
                 var data_table = JSON.parse('{{det|safe}}');
-                data_table["material"].forEach(element => {
-                    compras.add(data_table["cliente"],data_table["total"],element)
-                });
+                console.log(data_table);
+                compras.insertar_valores_update(data_table["material"])
                 
             {% endif %}
             

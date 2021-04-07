@@ -1,6 +1,6 @@
 <style>
     @page {
-        size: A4 landscape;
+        size: A4 portrait;
         margin: 30px;
     }
     p{
@@ -15,6 +15,18 @@
         padding-top: 2px;
     }
     @media print {
+        @page {
+        size: A4 landscape;
+        margin: 30px;
+        }
+        body{
+            transform: rotate(90deg);
+            max-width: 700px;
+            min-width: 700px;
+            position: fixed;
+            right: -230px;
+            top:240px;
+        }
         p{
             margin-bottom: 40px;
         }
