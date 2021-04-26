@@ -1,174 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Excedentes</title>
+  </head>
+  <body>
+    <div class="container">
+      <table style="width: 900px; border: 1px solid; border-collapse: collapse">
+        <h1>Excedentes Itagui</h1>
+        <hr />
 
-<head>
-    <meta charset="utf-8" />
-    <title>invoice {{client}}</title>
+        <thead>
+          <div class="fecha">
+            <h3>
+              FECHA : {{fecha}}
+              <span class="empresa">CLIENTE : </span> <span>{{ client}}</span>
+              
+              <span class="nit">NIT: 123456789</span>
+            </h3>
+          </div>
 
-    <style>
-        .invoice-box {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            font-size: 16px;
-            line-height: 24px;
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;
-        }
-
-        .invoice-box table {
-            width: 100%;
-            line-height: inherit;
-            text-align: left;
-        }
-
-        .invoice-box table td {
-            padding: 5px;
-            vertical-align: top;
-        }
-
-        .invoice-box table tr td:nth-child(2) {
-            text-align: left;
-        }
-
-        .invoice-box table tr.top table td {
-            padding-bottom: 0px;
-        }
-
-        .invoice-box table tr.top table td.title {
-            font-size: 35px;
-            line-height: 45px;
-            color: #333;
-        }
-
-        .invoice-box table tr.information table td {
-            padding-bottom: 0px;
-        }
-
-        .invoice-box table tr.heading td {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-        }
-
-        .invoice-box table tr.toping td {
-            position: relative;
-            top: -90px;
-        }
-
-        .invoice-box table tr.item td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .invoice-box table tr.item.last td {
-            border-bottom: none;
-        }
-
-        .invoice-box table tr.total td:nth-child(2) {
-            border-top: 2px solid #eee;
-            font-weight: bold;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .invoice-box table tr.top table td {
-                width: 100%;
-                display: block;
-                text-align: center;
-            }
-
-            .invoice-box table tr.information table td {
-                width: 100%;
-                display: block;
-                text-align: center;
-            }
-        }
-
-        /** RTL **/
-        .rtl {
-            direction: rtl;
-            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        }
-
-        .rtl table {
-            text-align: right;
-        }
-
-        .rtl table tr td:nth-child(2) {
-            text-align: left;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="3">
-                    <table>
-                        <tr>
-                            <td class="title">
-                                <h6
-                                    style="width: 100%; max-width: 300px;position:relative;top: -70px;">
-                                    Excedentes itagui</h6>
-                            </td>
-
-                            <td style="text-align: right;position:relative; right: -100px;top: -16px;">
-                                Cliente: {{ client}}<br />
-                                Fecha: {{fecha}}<br />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-            <!-- <tr class="information">
-					<td colspan="2">
-						<table>
-							<tr>
-								<td>
-									Sparksuite, Inc.<br />
-									12345 Sunny Road<br />
-									Sunnyville, CA 12345
-								</td>
-
-								<td>
-									Acme Corp.<br />
-									John Doe<br />
-									john@example.com
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr> -->
-                
-                <tr class="heading toping">
-                    <td>Material</td>
-                    <td>Kilo</td>
-                    <td>Valor unitario</td>
-                    <td>Total</td>
-                </tr>
-                {% for i in data %}
-                <tr class="item toping">
+          <tr style="text-align: center">
+            <th>DETALLE</th>
+            <th>KILOS</th>
+            <th>VALOR UNIT.</th>
+            <th>VALOR TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+                <tr style="text-align: center">
                     <td>{{ i.material.name }}</td>
                     <td>{{ i.kilos }}</td>
                     <td>{{ i.unit_value }}</td>
                     <td>{{ i.total }}</td>
                 </tr>
-                {% endfor %}
-                <tr class="total toping">
-                    <td></td>
+            {% endfor %}
+          
+          <tr style="text-align: center total">
+            <td class="column total"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
 
-                    <td style="text-align: right;position:relative; right: -220px;">Total: ${{total}}</td>
-                </tr>
-        </table>
+        <thead>
+          <tr style="text-align: center">
+            <th></th>
+            <th></th>
+            <th></th>
+            <td style="font-weight: bold">${{total}}</td>
+          </tr>
+        </thead>
+        <!--
+        <tfoot>
+          <tr>
+            <th>País</th>
+            <th>Capital</th>
+            <th>Moneda</th>
+          </tr>
+        </tfoot>
+        -->
+      </table>
     </div>
+    <style>
+      td {
+        border: 1px solid;
+      }
+      table {
+        margin: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      .column {
+        padding: 10px 0 10px 0;
+      }
+      .fecha {
+        margin-left: 120px;
+      }
+      .empresa {
+        margin-left: 150px;
+      }
+      .nit {
+        margin-left: 150px;
+      }
+      hr {
+        width: 200px;
+        margin-top: -20px;
+      }
+      .total {
+        border-left: 0px;
+      }
+      h3 {
+        font-size: 12px;
+      }
+      @media print {
+        .fecha {
+        margin-left: 120px;
+        }
+        .empresa {
+            margin-left: 120px;
+        }
+        .nit {
+            margin-left: 120px;
+        }
+        h3 {
+        font-size: 12px;
+        }
+      }  
+    </style>
     <script>
         window.print()
         setTimeout(() => {
             window.location.href = "/compras/create"
         }, 300);
     </script>
-</body>
-
+  </body>
 </html>
