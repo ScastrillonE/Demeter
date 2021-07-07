@@ -46,15 +46,14 @@ def data_client(request):
         kilos_vidrio = 0
         kilos_otros = 0
         data = []
-
-        
-        query = Compra.objects.filter(client_name__id = request.POST['client_id'])
+        start_date = request.POST['inicio']
+        end_date = request.POST['fin']
+        query = Compra.objects.filter(client_name__id = request.POST['client_id'],modified__range=(start_date, end_date))
         j=0
         for j in range(0,len(query)):
             querydet = DetCompra.objects.filter(compra = query[j]).exclude(bonus=0)
 
             for i in querydet:
-                
                 if i.bonus == 1:
                     kilos_carton = kilos_carton + float(i.kilos)
                 elif i.bonus == 2:
