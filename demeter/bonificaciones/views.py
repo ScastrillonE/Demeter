@@ -46,15 +46,14 @@ def data_client(request):
         kilos_vidrio = 0
         kilos_otros = 0
         data = []
-
-        
-        query = Compra.objects.filter(client_name__id = request.POST['client_id'])
+        start_date = request.POST['inicio']
+        end_date = request.POST['fin']
+        query = Compra.objects.filter(client_name__id = request.POST['client_id'],modified__range=(start_date, end_date))
         j=0
         for j in range(0,len(query)):
             querydet = DetCompra.objects.filter(compra = query[j]).exclude(bonus=0)
 
             for i in querydet:
-                
                 if i.bonus == 1:
                     kilos_carton = kilos_carton + float(i.kilos)
                 elif i.bonus == 2:
@@ -72,7 +71,6 @@ def data_client(request):
                 elif i.bonus == 8:
                     kilos_otros = kilos_otros + float(i.kilos)
 
-        print(kilos_carton)
         data.append({'carton':format(float(kilos_carton), '0,.3f'),'archivo':format(float(kilos_archivo), '0,.3f'),'periodico':format(float(kilos_periodico), '0,.3f'),
         'plega':format(float(kilos_plega), '0,.3f'),'plastico':format(float(kilos_plastico), '0,.3f'),'chatarra':format(float(kilos_chatarra), '0,.3f'),'vidrio':format(float(kilos_vidrio), '0,.3f'),
         'otros':format(float(kilos_otros), '0,.3f')})

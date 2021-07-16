@@ -20,6 +20,7 @@
 {% endblock %} -->
 
 {% block content %}
+
     <input type="hidden" id="id_action" value="{{action}}">
     <form id="frmSale" method="post">
         <div class="card card-primary">
@@ -41,68 +42,18 @@
                                 <h3 class="card-title"><i class="fas fa-boxes"></i>Detalle de materiales</h3>
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label>Material:</label>
-                                    <div class="input-group">
-                                        <select id="id_material" class="form-select" style="width: 80%;" name="state"></select>
-                                        
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary dropdown-toggle" type="button"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Opciones
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                
-                                                <button type="button" class="btn dropdown-item" data-toggle="modal" data-target="#myModalClient">
-                                                    <i class="fas fa-search"></i> Añadir nuevo material
-                                                  </button>
-                                                <!-- <a class="dropdown-item btnClearSearch">
-                                                    <i class="fas fa-times"></i> Otro
-                                                </a> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" id="id_kilos" class="form-control m-1" autocomplete="off"#}
-    {#                                               placeholder="Digite los kilos" maxlength="50" name="n_kilos">
-                                        <input type="text" id="id_valor_uni" class="form-control m-1" autocomplete="off"#}
-    {#                                               placeholder="Digite el valor unitario" maxlength="50" name="valor_unitario">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <select id="id_bonus" style="width: 100%;" class="form-select" aria-label=".form-select-lg example">
-                                        <option value="0">No aplica</option>
-                                        <option value="1">Carton</option>
-                                        <option value="2">Archivo</option>
-                                        <option value="3">Periodico</option>
-                                        <option value="4">Plega</option>
-                                        <option value="5">Plastico</option>
-                                        <option value="6">Chatarra</option>
-                                        <option value="7">Vidrio</option>
-                                        <option value="8">Pastas</option>
-                                      </select>
-                                </div>
-                             <a class="btn btn-success" id="id_agregar">
-                                 Agregar producto
-                             </a>
-                                <hr>
-                                <table class="table table-bordered" id="tblcompras">
-                                    <thead>
-                                    <tr>
+                                <table class="table" id="tablaprueba">
+                                    <thead class="thead-dark">
+                                      <tr>
                                         <th>Material</th>
                                         <th>Kilos</th>
                                         <th>Valor unitario</th>
-                                        <th>Bonus</th>
                                         <th>Total</th>
-                                        <th>Opciones</th>
-                                    </tr>
+                                        <th>opciones</th>
+                                      </tr>
                                     </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                    <tbody></tbody>
+                                  </table>
                             </div>
                         </div>
                     </div>
@@ -211,12 +162,11 @@
     <script src="{% static 'js/form.js' %}"></script>
     <script>
         $(document).ready(function() {
-
+            compras.agregar_fila();
             {% if det %}
                 var data_table = JSON.parse('{{det|safe}}');
-                data_table["material"].forEach(element => {
-                    compras.add(data_table["cliente"],data_table["total"],element)
-                });
+                console.log(data_table);
+                compras.insertar_valores_update(data_table["material"])
                 
             {% endif %}
             
@@ -226,7 +176,7 @@
                 
                 return operacion;
             }
-            document.addEventListener('keypress',(e)=>{
+            /* document.addEventListener('keypress',(e)=>{
                 if(e.keyCode == 13){
                     if(verificar_campos()){
                         alert("Verifica el campo material,kilos o valor unitario, no deben estar vacios");
@@ -236,7 +186,7 @@
                     }
                     
                 }
-            });
+            }); */
             $("#id_agregar").on('click',()=>{
                 if(verificar_campos()){
                     alert("Verifica el campo material,kilos o valor unitario, no deben estar vacios");
@@ -264,35 +214,6 @@
                 $('#id_material').val(null).trigger('change.select2');
                 $('#id_material').text(null).trigger('change.select2');
             }
-
-
-            $('#id_material').select2({
-                theme: "bootstrap4",
-                language: 'es',
-                allowClear: true,
-                ajax: {
-                    delay: 250,
-                    type: 'POST',
-                    url: window.location.pathname,
-                    data: function (params) {
-                        var queryParameters = {
-                            term: params.term,
-                            action: 'search_materiales',
-                            'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: $.map(data, function(obj) {
-                            return { id: obj.id, text: obj.name };
-                            })
-                        };
-                    },
-                },
-                placeholder: 'Ingrese el material',
-                minimumInputLength: 1,
-            });
             
             $('#id_bonus').select2({
                 theme: 'bootstrap4',

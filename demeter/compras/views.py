@@ -59,6 +59,7 @@ class ComprasView(LoginRequiredMixin,CreateView):
             action = request.POST['action']
             if action == 'save':
                 datos = json.loads(request.POST['datos'])
+                
                 try:
                     with transaction.atomic():
                         cliente = Client.objects.get(id=datos['cliente'])
@@ -71,12 +72,11 @@ class ComprasView(LoginRequiredMixin,CreateView):
 
                             detalle_compra = DetCompra()
                             material_id = Material.objects.get(id=material['id'])
-
                             detalle_compra.compra = compra
                             detalle_compra.material =  material_id
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
-                            detalle_compra.bonus = material['bonus']
+                            detalle_compra.bonus = self.validar_bonus(material_id)
                             detalle_compra.total = material['total']
                             detalle_compra.save()
                         
@@ -88,13 +88,33 @@ class ComprasView(LoginRequiredMixin,CreateView):
                         data_info['success']='Guardado con exito'
                         data_info['id_guardado'] = compra.id
                 except Exception as e:
-                    data_info['error'] = e
+                    data_info['error'] = str(e)
 
 
             else:
                 return JsonResponse(data_info, safe=False)
 
         return JsonResponse(data_info, safe=False)
+
+    def validar_bonus(self,name):
+        if str(name) == 'CARTON':
+            return 1
+        elif str(name) == 'ARCHIVO':
+            return 2
+        elif str(name) == 'PERIODICO':
+            return 3
+        elif str(name) == 'PLEGA':
+            return 4
+        elif str(name) == 'PLASTICO':
+            return 5
+        elif str(name) == 'CHATARRA':
+            return 6
+        elif str(name) == 'VIDRIO':
+            return 7
+        elif str(name) == 'PASTAS':
+            return 8
+        
+        return 0
         
 class ComprasListView(LoginRequiredMixin,ListView):
     model=Compra
@@ -125,7 +145,16 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'update'
-        context['det'] = Representation.objects.get(compraRepresentation_id = self.kwargs['pk']).representation #json.dumps(self.get_det_compra(), cls=DjangoJSONEncoder)
+        pre = Representation.objects.get(compraRepresentation_id = self.kwargs['pk']).representation #json.dumps(self.get_det_compra(), cls=DjangoJSONEncoder)
+        print(pre)
+        pre = json.loads(pre)
+        
+        for i in pre["material"]:
+            i["name"]= str(Material.objects.get(id=i["id"]))
+        
+        context['det'] = json.dumps(pre)
+             
+
         return context        
     
     def post(self,request,*args,**kwargs):
@@ -165,7 +194,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                             detalle_compra.material =  material_id
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
-                            detalle_compra.bonus = material['bonus']
+                            detalle_compra.bonus = self.validar_bonus(material_id)
                             detalle_compra.total = material['total']
 
                             detalle_compra.save()
@@ -191,6 +220,25 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
 
         return JsonResponse(data_info, safe=False)
             
+    def validar_bonus(self,name):
+        if str(name) == 'CARTON':
+            return 1
+        elif str(name) == 'ARCHIVO':
+            return 2
+        elif str(name) == 'PERIODICO':
+            return 3
+        elif str(name) == 'PLEGA':
+            return 4
+        elif str(name) == 'PLASTICO':
+            return 5
+        elif str(name) == 'CHATARRA':
+            return 6
+        elif str(name) == 'VIDRIO':
+            return 7
+        elif str(name) == 'PASTAS':
+            return 8
+        
+        return 0
     
 class ComprasDeleteView(LoginRequiredMixin,DeleteView):
     model = Compra
@@ -204,6 +252,20 @@ class ComprasDeleteView(LoginRequiredMixin,DeleteView):
         self.object.save()
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url) """
+
+class CompraInvoicePrintView(LoginRequiredMixin, View):
+    def get(self,request,*args,**kwargs):
+        context = {}
+        query = DetCompra.objects.filter(compra_id = self.kwargs['pk'])
+        print(query[0])
+        query_compra = Compra.objects.get(id=self.kwargs['pk'])
+        context['data'] = query
+        context['total'] = query_compra.total_value
+        context['fecha'] = query_compra.creation_date
+        context['client'] = query_compra.client_name
+        
+
+        return render(request,'compras/invoice.html',context=context)
 
 class CompraInvoiceView(LoginRequiredMixin, View):
     def get(self,request,*args,**kwargs):

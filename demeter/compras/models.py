@@ -16,7 +16,7 @@ from demeter.materiales.models import Material
     (5,'Plastico'),
     (6,'Chatarra'),
     (7,'Vidrio'),
-    (8,'Otros')
+    (8,'plega')
 ] """
 
 class Compra(models.Model):

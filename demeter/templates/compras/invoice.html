@@ -1,186 +1,123 @@
-<style>
-    .print-container {
-        max-width: 900px;
-        margin: 30px auto;
-        background: white;
-        padding: 10px 30px;
-    }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Excedentes</title>
+  </head>
+  <body>
+    <div class="container">
+      <table style="width: 900px; border: 1px solid; border-collapse: collapse">
+        <h1>Excedentes Itagui</h1>
+        <hr />
 
-    .print-container .header {
-        margin-bottom: 20px;
-        border-bottom: 1px solid #dbdbdb;
-        padding-bottom: 20px;
-    }
+        <thead>
+          <div class="fecha">
+            <h3>
+              FECHA : {{fecha}}
+              <span class="empresa">CLIENTE : </span> <span>{{ client}}</span>
+              
+              <span class="nit">NIT: 123456789</span>
+            </h3>
+          </div>
 
-    .print-container table {
-        margin-top: 30px;
-    }
-
-    .print-container table tbody tr.no-border:first-child {
-        opacity: 0.6 !important;
-    }
-
-    .print-container .summary-table {
-        border: 1px solid #DDE1E4;
-    }
-
-    .print-container .summary-table tr td:last-child {
-        text-align: right;
-    }
-
-    .print-container .summary-table tr th:last-child {
-        text-align: right;
-    }
-
-    .print-container .summary-table td {
-        border-left: 1px solid #dbdbdb;
-    }
-
-    .print-container .summary-table th {
-        border-left: 1px solid #dbdbdb;
-    }
-
-    .print-container .summary-table thead {
-        color: #737F8B;
-        text-transform: uppercase;
-    }
-
-    .print-container .ft-18 {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .print-container .adder {
-        font-size: 16px;
-        font-weight: 500;
-        text-align: right;
-        border-left: 0;
-        border-right: 0;
-        border-bottom: 0;
-    }
-
-    .print-container .total {
-        font-size: 22px;
-    }
-
-    .print-container .mega {
-        font-size: 33px;
-        margin-bottom: 10px;
-    }
-
-    .invoice-logo {
-        height: 80px;
-        width: auto;
-    }
-
-    .other-rates {
-        float: right;
-        width: 350px;
-        text-align: right;
-    }
-
-    .other-rates dl {
-        width: 100%;
-        margin-bottom: 5px;
-    }
-
-    .other-rates dl.total {
-        border-top: 1px solid #dbdbdb;
-        padding-top: 10px;
-    }
-
-    .other-rates dt {
-        width: 50%;
-        float: left;
-    }
-
-    .other-rates dd {
-        width: 50%;
-        float: left;
-        padding-right: 10px;
-        margin: 0;
-    }
-
-    .invoice-from {
-        float: right;
-    }
-
-    .summary-info {
-        border-bottom: 1px solid #dbdbdb;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-    }
-
-    @media print {
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-weight: bold;
-        }
-
-        h1:first-letter,
-        h2:first-letter,
-        h3:first-letter,
-        h4:first-letter,
-        h5:first-letter,
-        h6:first-letter {
-            font-size: inherit;
-        }
-    }
-</style>
-<div class="print-container clearfix">
-    <div class="header">
-        <div class="content">
-            <table style="width:100%">
-                <tr style="width:100%" class="heading">
-                    <td class="text-right">
-                        <div class="invoice-from" style="max-width:400px">
-                            <h3 class="mega">Excedentes Itagui</h3>
-                            <p><span style="font-size: 16px;">Fecha: </span> <span style="font-size: 13px;">{{fecha}}</span> <span style="font-size: 16px;">Nombre cliente: </span>
-                                <span style="font-size: 13px;">{{client}}</span> </p>
-
-                        </div>
-
-                    </td>
+          <tr style="text-align: center">
+            <th>DETALLE</th>
+            <th>KILOS</th>
+            <th>VALOR UNIT.</th>
+            <th>VALOR TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+                <tr style="text-align: center">
+                    <td>{{ i.material.name }}</td>
+                    <td>{{ i.kilos }}</td>
+                    <td>{{ i.unit_value }}</td>
+                    <td>{{ i.total }}</td>
                 </tr>
-            </table>
-        </div>
-    </div>
-    <div class="body">
-        <div class="summary-info">
-            <table class="table summary-table">
-                <thead>
-                    <tr>
-                        <th>DETALLE</th>
-                        <th>KILOS</th>
-                        <th>VALOR UNIT.</th>
-                        <th>TOTAL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in data %}
-                        <tr>
-                            <td>{{ i.material.name }}</td>
-                            <td>{{ i.kilos }}</td>
-                            <td>{{ i.unit_value }}</td>
-                            <td>{{ i.total }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div class="row">
-                <div class="col-md-12">
-                        <dl class="dl-horizontal total clearfix">
-                            <dt class="blue">Total: ${{ total }}</dt>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            {% endfor %}
+          
+          <tr style="text-align: center total">
+            <td class="column total"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
 
-</div>
+        <thead>
+          <tr style="text-align: center">
+            <th></th>
+            <th></th>
+            <th></th>
+            <td style="font-weight: bold">${{total}}</td>
+          </tr>
+        </thead>
+        <!--
+        <tfoot>
+          <tr>
+            <th>País</th>
+            <th>Capital</th>
+            <th>Moneda</th>
+          </tr>
+        </tfoot>
+        -->
+      </table>
+    </div>
+    <style>
+      td {
+        border: 1px solid;
+      }
+      table {
+        margin: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      .column {
+        padding: 10px 0 10px 0;
+      }
+      .fecha {
+        margin-left: 120px;
+      }
+      .empresa {
+        margin-left: 150px;
+      }
+      .nit {
+        margin-left: 150px;
+      }
+      hr {
+        width: 200px;
+        margin-top: -20px;
+      }
+      .total {
+        border-left: 0px;
+      }
+      h3 {
+        font-size: 12px;
+      }
+      @media print {
+        .fecha {
+        margin-left: 120px;
+        }
+        .empresa {
+            margin-left: 120px;
+        }
+        .nit {
+            margin-left: 120px;
+        }
+        h3 {
+        font-size: 12px;
+        }
+      }  
+    </style>
+    <script>
+        window.print()
+        setTimeout(() => {
+            window.location.href = "/compras/create"
+        }, 300);
+    </script>
+  </body>
+</html>
