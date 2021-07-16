@@ -5,8 +5,8 @@ from django.forms.models import model_to_dict
 
 class Client(models.Model):
     name = models.CharField('Nombre', max_length = 150)
-    identification = models.IntegerField('Cedula')
-    phone = models.IntegerField()
+    identification = models.CharField('Cedula',max_length=90)
+    phone = models.CharField('Telefono',max_length=90)
     active = models.BooleanField(default=True)
     
     def __str__(self):

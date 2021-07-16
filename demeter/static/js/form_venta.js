@@ -144,6 +144,7 @@ document.getElementById('id_btn_guardar').addEventListener('click',function guar
     })
     .then((data)=>{
         alert(data[0]["success"]);
+        location.reload()
     })
     .catch(function(err) {
         console.log(err);

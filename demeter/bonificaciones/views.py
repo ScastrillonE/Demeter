@@ -71,7 +71,6 @@ def data_client(request):
                 elif i.bonus == 8:
                     kilos_otros = kilos_otros + float(i.kilos)
 
-        print(kilos_carton)
         data.append({'carton':format(float(kilos_carton), '0,.3f'),'archivo':format(float(kilos_archivo), '0,.3f'),'periodico':format(float(kilos_periodico), '0,.3f'),
         'plega':format(float(kilos_plega), '0,.3f'),'plastico':format(float(kilos_plastico), '0,.3f'),'chatarra':format(float(kilos_chatarra), '0,.3f'),'vidrio':format(float(kilos_vidrio), '0,.3f'),
         'otros':format(float(kilos_otros), '0,.3f')})
