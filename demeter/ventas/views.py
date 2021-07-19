@@ -103,6 +103,7 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
     form_class = VentasForm
     template_name = 'ventas/venta_create.html'
     success_url = reverse_lazy('venta_create')
+    context_object_name = 'obj'
  
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
