@@ -47,5 +47,5 @@ services:
       - ./config:/app/config:z
       - ./demeter:/app/demeter:z
     ports:
-      - "7000:7000"
+      - "7001:7000"
     command: /start-docs

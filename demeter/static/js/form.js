@@ -195,9 +195,14 @@ document.getElementById('id_btn_guardar').addEventListener('click',function guar
         }
     })
     .then((data)=>{
-        $.notify(data["success"],'success');
-        let id = data['id_guardado']
-        location.href="/compras/pdf/print/" + id + "/"
+        console.log(data)
+        if(!data["error"]){
+            $.notify(data["success"],'success');
+            let id = data['id_guardado']
+            location.href="/compras/pdf/print/" + id + "/"
+        }
+        $.notify(data["error"],'danger');
+
     })
     .catch(function(err) {
         console.log(err);
