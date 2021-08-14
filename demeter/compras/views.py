@@ -1,21 +1,21 @@
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponseRedirect,HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView, DeleteView, View
 
-from django.core.serializers.json import DjangoJSONEncoder # Solucion error object decimal al convertir a formato json
+from django.core.serializers.json import DjangoJSONEncoder  # Solucion error object decimal al convertir a formato json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from datetime import datetime
 from .forms import CompraForm, DetCompraForm
-from .models import Compra, DetCompra,Representation
+from .models import Compra, DetCompra, Representation
 from demeter.materiales.models import Material
 from demeter.clientes.models import Client
 
-#xhtml2pdf
+# xhtml2pdf
 import os
 from django.conf import settings
 from django.template.loader import get_template
@@ -23,7 +23,8 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 # Create your views here.
 
-class ComprasView(LoginRequiredMixin,CreateView):
+
+class ComprasView(LoginRequiredMixin, CreateView):
     model = Compra
     form_class = DetCompraForm
     template_name = 'compras/compra_create.html'
@@ -33,7 +34,7 @@ class ComprasView(LoginRequiredMixin,CreateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         now = datetime.now()
         context['time_now'] = now.strftime("%Y-%m-%d")
@@ -42,24 +43,23 @@ class ComprasView(LoginRequiredMixin,CreateView):
 
         return context
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         data = []
-        data_info ={}
+        data_info = {}
         if request.is_ajax():
             data = []
             action = request.POST['action']
             if action == 'search_materiales':
-                for i in Material.objects.filter(name__icontains = request.POST['term']):
+                for i in Material.objects.filter(name__icontains=request.POST['term']):
                     data.append(i.toJson())
             elif action == 'search_clients':
-                for i in Client.objects.filter(name__icontains = request.POST['term']):
+                for i in Client.objects.filter(name__icontains=request.POST['term']):
                     data.append(i.toJson())
             return JsonResponse(data, safe=False)
         else:
             action = request.POST['action']
             if action == 'save':
                 datos = json.loads(request.POST['datos'])
-                
                 try:
                     with transaction.atomic():
                         cliente = Client.objects.get(id=datos['cliente'])
@@ -67,36 +67,35 @@ class ComprasView(LoginRequiredMixin,CreateView):
                         compra.client_name = cliente
                         compra.total_value = datos['total']
                         compra.save()
-                        
+
                         for material in datos['material']:
 
                             detalle_compra = DetCompra()
                             material_id = Material.objects.get(id=material['id'])
                             detalle_compra.compra = compra
-                            detalle_compra.material =  material_id
+                            detalle_compra.material = material_id
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
                             detalle_compra.bonus = self.validar_bonus(material_id)
                             detalle_compra.total = material['total']
                             detalle_compra.save()
-                        
+
                         representation = Representation()
                         representation.compraRepresentation = compra
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data_info['success']='Guardado con exito'
+                        data_info['success'] = 'Guardado con exito'
                         data_info['id_guardado'] = compra.id
                 except Exception as e:
                     data_info['error'] = str(e)
-
 
             else:
                 return JsonResponse(data_info, safe=False)
 
         return JsonResponse(data_info, safe=False)
 
-    def validar_bonus(self,name):
+    def validar_bonus(self, name):
         if str(name) == 'CARTON':
             return 1
         elif str(name) == 'ARCHIVO':
@@ -111,63 +110,65 @@ class ComprasView(LoginRequiredMixin,CreateView):
             return 6
         elif str(name) == 'VIDRIO':
             return 7
-        elif str(name) == 'PASTAS':
+        elif str(name) == 'PASTA GRUESA':
             return 8
-        
+        elif str(name) == 'PASTA REVUELTA':
+            return 8
+
         return 0
-        
-class ComprasListView(LoginRequiredMixin,ListView):
-    model=Compra
+
+
+class ComprasListView(LoginRequiredMixin, ListView):
+    model = Compra
     template_name = 'compras/compras_list.html'
 
-    def get(self,request,*arg,**kwargs):
+    def get(self, request, *arg, **kwargs):
         if request.is_ajax():
             data = []
             for i in Compra.objects.all():
                 data.append(i.toJson())
-            
+
             return JsonResponse(data, safe=False)
         else:
             return render(request, self.template_name)
-    
 
-class ComprasUpdateView(LoginRequiredMixin,UpdateView):
+
+class ComprasUpdateView(LoginRequiredMixin, UpdateView):
     model = Compra
     form_class = CompraForm
     template_name = 'compras/compra_create.html'
     success_url = reverse_lazy('compra_create')
- 
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'update'
-        pre = Representation.objects.get(compraRepresentation_id = self.kwargs['pk']).representation #json.dumps(self.get_det_compra(), cls=DjangoJSONEncoder)
+        # json.dumps(self.get_det_compra(), cls=DjangoJSONEncoder)
+        pre = Representation.objects.get(compraRepresentation_id=self.kwargs['pk']).representation
         print(pre)
         pre = json.loads(pre)
-        
-        for i in pre["material"]:
-            i["name"]= str(Material.objects.get(id=i["id"]))
-        
-        context['det'] = json.dumps(pre)
-             
 
-        return context        
-    
-    def post(self,request,*args,**kwargs):
+        for i in pre["material"]:
+            i["name"] = str(Material.objects.get(id=i["id"]))
+
+        context['det'] = json.dumps(pre)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
         data = []
-        data_info ={}
+        data_info = {}
         if request.is_ajax():
             data = []
             action = request.POST['action']
             if action == 'search_materiales':
-                for i in Material.objects.filter(name__icontains = request.POST['term']):
+                for i in Material.objects.filter(name__icontains=request.POST['term']):
                     data.append(i.toJson())
             elif action == 'search_clients':
-                for i in Client.objects.filter(name__icontains = request.POST['term']):
+                for i in Client.objects.filter(name__icontains=request.POST['term']):
                     data.append(i.toJson())
             return JsonResponse(data, safe=False)
         else:
@@ -182,7 +183,7 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                         compra.total_value = datos['total']
                         compra.save()
 
-                        #compra.compratodet.all().delete()
+                        # compra.compratodet.all().delete()
                         detalle = DetCompra.objects.filter(compra=compra)
                         detalle.delete()
                         for material in datos['material']:
@@ -191,16 +192,15 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                             material_id = Material.objects.get(id=material['id'])
 
                             detalle_compra.compra = compra
-                            detalle_compra.material =  material_id
+                            detalle_compra.material = material_id
                             detalle_compra.kilos = material['kilos']
                             detalle_compra.unit_value = material['valor_uni']
                             detalle_compra.bonus = self.validar_bonus(material_id)
                             detalle_compra.total = material['total']
 
                             detalle_compra.save()
-                            
 
-                        #compra.representa.all().delete()
+                        # compra.representa.all().delete()
                         represen = Representation.objects.filter(compraRepresentation=compra)
                         represen.delete()
                         representation = Representation()
@@ -208,19 +208,19 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data_info['success']='Actualizado con exito'
+                        data_info['success'] = 'Actualizado con exito'
                         data_info['id_guardado'] = compra.id
 
                 except Exception as e:
-                        data_info['error'] = e
-
+                    data_info['error'] = e
 
             else:
                 return JsonResponse(data_info, safe=False)
 
         return JsonResponse(data_info, safe=False)
-            
-    def validar_bonus(self,name):
+
+
+    def validar_bonus(self, name):
         if str(name) == 'CARTON':
             return 1
         elif str(name) == 'ARCHIVO':
@@ -235,16 +235,21 @@ class ComprasUpdateView(LoginRequiredMixin,UpdateView):
             return 6
         elif str(name) == 'VIDRIO':
             return 7
-        elif str(name) == 'PASTAS':
+        elif str(name) == 'PASTA GRUESA':
             return 8
-        
+        elif str(name) == 'PASTA REVUELTA':
+            return 8
+
         return 0
-    
-class ComprasDeleteView(LoginRequiredMixin,DeleteView):
+
+
+class ComprasDeleteView(LoginRequiredMixin, DeleteView):
     model = Compra
     success_url = reverse_lazy('compra_list')
     template_name = 'compras/delete.html'
     context_object_name = 'obj'
+
+
 """ 
     def delete(self,request,*args,**kwargs):
         self.object = self.model.objects.get(id=self.kwargs['pk'])
@@ -253,27 +258,29 @@ class ComprasDeleteView(LoginRequiredMixin,DeleteView):
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url) """
 
+
 class CompraInvoicePrintView(LoginRequiredMixin, View):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         context = {}
-        query = DetCompra.objects.filter(compra_id = self.kwargs['pk'])
+        query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
         print(query[0])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
         context['data'] = query
-        context['total'] = query_compra.total_value
+        context['total'] = int(query_compra.total_value)
         context['fecha'] = query_compra.creation_date
         context['client'] = query_compra.client_name
-        
 
-        return render(request,'compras/invoice.html',context=context)
+        return render(request, 'compras/invoice.html', context=context)
+
 
 class CompraInvoiceView(LoginRequiredMixin, View):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         context = {}
-        query = DetCompra.objects.filter(compra_id = self.kwargs['pk'])
+        query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
         print(query[0])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
         template = get_template('compras/invoice.html')
+        print(query_compra.total_value)
         context['data'] = query
         context['total'] = query_compra.total_value
         context['fecha'] = query_compra.creation_date
@@ -284,7 +291,7 @@ class CompraInvoiceView(LoginRequiredMixin, View):
 
         # create a pdf
         pisa_status = pisa.CreatePDF(
-        html, dest=response)
+            html, dest=response)
         # if error then show some funy view
         if pisa_status.err:
             return HttpResponse('We had some errors <pre>' + html + '</pre>')

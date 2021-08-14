@@ -42,7 +42,7 @@ class DetCompra(models.Model):
     compra = models.ForeignKey(Compra,on_delete=models.CASCADE,related_name='compratodet')
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
     kilos = models.CharField('Kilos',max_length=160)
-    unit_value = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    unit_value = models.IntegerField(default=0)
     bonus = models.IntegerField(default=0)
     total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
     creation_date = models.DateField('Fecha creacion',blank=True,null=True)
@@ -67,4 +67,5 @@ class Representation(models.Model):
 
 @receiver(pre_save, sender=DetCompra)
 def calculate_total(sender,instance,**kwargs):
-        Compra.total_value = float(instance.unit_value) * float(instance.kilos)
+        total = int(instance.unit_value) * float(instance.kilos)
+        Compra.total_value = int(total)
