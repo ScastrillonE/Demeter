@@ -263,12 +263,13 @@ class CompraInvoicePrintView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = {}
         query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
-        print(query[0])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
         context['data'] = query
         context['total'] = int(query_compra.total_value)
         context['fecha'] = query_compra.creation_date
         context['client'] = query_compra.client_name
+
+        print("THIS", int(query[0].total))
 
         return render(request, 'compras/invoice.html', context=context)
 
