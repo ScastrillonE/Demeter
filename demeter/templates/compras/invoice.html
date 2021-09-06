@@ -34,7 +34,7 @@
                 <tr style="text-align: center">
                     <td>{{ i.material.name }}</td>
                     <td>{{ i.kilos }}</td>
-                    <td>{{ i.unit_value }}</td>
+                    <td>{{ i.unit_value |floatformat:"0" }}</td>
                     <td>{{ i.total |floatformat:"0" }}</td>
                 </tr>
             {% endfor %}
@@ -52,7 +52,7 @@
             <th></th>
             <th></th>
             <th></th>
-            <td style="font-weight: bold">${{total}}</td>
+            <td style="font-weight: bold">${{total |floatformat:"0"}}</td>
           </tr>
         </thead>
         <!--
