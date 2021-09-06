@@ -261,6 +261,7 @@ class ComprasDeleteView(LoginRequiredMixin, DeleteView):
 
 class CompraInvoicePrintView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        import babel.numbers
         context = {}
         query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
@@ -268,8 +269,6 @@ class CompraInvoicePrintView(LoginRequiredMixin, View):
         context['total'] = int(query_compra.total_value)
         context['fecha'] = query_compra.creation_date
         context['client'] = query_compra.client_name
-
-        print("THIS", int(query[0].total))
 
         return render(request, 'compras/invoice.html', context=context)
 
@@ -283,7 +282,7 @@ class CompraInvoiceView(LoginRequiredMixin, View):
         template = get_template('compras/invoice.html')
         print(query_compra.total_value)
         context['data'] = query
-        context['total'] = query_compra.total_value
+        context['total'] = int(query_compra.total_value)
         context['fecha'] = query_compra.creation_date
         context['client'] = query_compra.client_name
         html = template.render(context)

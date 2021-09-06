@@ -21,7 +21,7 @@ from demeter.materiales.models import Material
 
 class Compra(models.Model):
     client_name = models.ForeignKey(Client, on_delete=models.CASCADE)
-    total_value = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total_value = models.IntegerField(default=0)
     creation_date = models.DateField('Fecha creacion',blank=True,null=True)
     modified= models.DateField('Fecha modificacion',blank=True,null=True)
 
