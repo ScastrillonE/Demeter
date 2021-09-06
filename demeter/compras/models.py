@@ -44,7 +44,7 @@ class DetCompra(models.Model):
     kilos = models.CharField('Kilos',max_length=160)
     unit_value = models.IntegerField(default=0)
     bonus = models.IntegerField(default=0)
-    total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total = models.IntegerField(default=0)
     creation_date = models.DateField('Fecha creacion',blank=True,null=True)
     modified= models.DateField('Fecha modificacion',blank=True,null=True)
 
