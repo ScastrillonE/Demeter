@@ -24,7 +24,7 @@ class ClientListView(LoginRequiredMixin,ListView):
             data = []
             for i in Client.objects.all():
                 data.append(i.toJson())
-                print(data)
+                #print(data)
             return JsonResponse(data, safe=False)
         else:
             return render(request, self.template_name)

@@ -148,7 +148,6 @@ class ComprasUpdateView(LoginRequiredMixin, UpdateView):
         context['action'] = 'update'
         # json.dumps(self.get_det_compra(), cls=DjangoJSONEncoder)
         pre = Representation.objects.get(compraRepresentation_id=self.kwargs['pk']).representation
-        print(pre)
         pre = json.loads(pre)
 
         for i in pre["material"]:
@@ -277,7 +276,6 @@ class CompraInvoiceView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = {}
         query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
-        print(query[0])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
         template = get_template('compras/invoice.html')
         print(query_compra.total_value)

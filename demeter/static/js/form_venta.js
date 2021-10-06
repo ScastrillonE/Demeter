@@ -205,10 +205,10 @@ document.getElementById('id_btn_guardar').addEventListener('click',function guar
     })
     .then((data)=>{
         //console.log(data)
-        if(data[0]["success"]){
-            $.notify(data[0]["success"],'success'); 
+        if(data["success"]){
+            $.notify(data["success"],'success'); 
         }else{
-            $.notify(data[0]["error"],'danger'); 
+            $.notify(data["error"],'danger'); 
         }
         
         let id = data['id_guardado']

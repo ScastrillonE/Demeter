@@ -8,7 +8,7 @@ from demeter.materiales.models import Material
 class Ventas(models.Model):
     buyer = models.CharField('Empresa a la que vende',max_length=250)
     purchase = models.CharField('Empresa a la que compra',max_length=200)
-    total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total = models.IntegerField(default=0)
     creation_date = models.DateField(blank=True,null=True)
     modified = models.DateField(blank=True,null=True)
 
@@ -30,7 +30,7 @@ class DetVenta(models.Model):
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
     kilos = models.CharField('Kilos',max_length=200)
     unit_value = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
-    total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total = models.IntegerField(default=0)
 
 class Representation(models.Model):
     ventaRepresentation = models.ForeignKey(Ventas,on_delete=models.CASCADE,related_name='representa')
