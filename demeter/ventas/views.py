@@ -48,13 +48,13 @@ class VentasView(LoginRequiredMixin,CreateView):
             action = request.POST['action']
             if action == 'save':
                 datos = json.loads(request.POST['datos'])
-                print(datos)
+                #print(datos)
                 try:
                     with transaction.atomic():
                         venta = Ventas()
                         venta.buyer = datos['vende']
                         venta.purchase = datos['compra']
-                        venta.total_value = datos['total']
+                        venta.total = datos['total']
                         venta.save()
                         
                         for material in datos['material']:
@@ -74,7 +74,7 @@ class VentasView(LoginRequiredMixin,CreateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data.append({'success':'Guardado con exito'})
+                        return JsonResponse({'success':'Guardado con exito'},safe=False)
                 except Exception as e:
                     data.append({'error': str(e)})
 
@@ -130,13 +130,13 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
             action = request.POST['action']
             if action == 'update':
                 datos = json.loads(request.POST['datos'])
-                print(datos)
+                #print(datos)
                 try:
                     with transaction.atomic():
                         venta = Ventas.objects.get(pk=self.kwargs['pk'])
                         venta.buyer =datos['vende']
                         venta.purchase = datos['compra']
-                        venta.total_value = datos['total']
+                        venta.total = datos['total']
                         venta.save()
 
                         venta.rn_venta.all().delete()
@@ -158,9 +158,9 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
                         representation.representation = request.POST['representation']
                         representation.save()
 
-                        data_info['success']='Actualizado con exito'
+                    return JsonResponse({'success':'Actualizado con exito'},safe=False)
                 except Exception as e:
-                    print(e)
+                    #print(e)
                     data_info['error'] = e
 
 

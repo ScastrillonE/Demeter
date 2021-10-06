@@ -32,7 +32,11 @@
         columns : [
             {"data":"id"},
             {"data":"client.name"},
-            {"data":"total_value"},
+            {"data":"total_value",
+                render: function(data,type,row){
+                    return `<p> ${new Intl.NumberFormat('co-CO', {style: "currency", currency: "COP"}).format(row.total_value)}</p>`;
+                }
+            },
             {"data":"creation_date"},
             {
                 data: 'options',

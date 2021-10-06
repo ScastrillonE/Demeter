@@ -8,6 +8,7 @@
             <th>ID</th>
             <th>Comprador</th>
             <th>Empresa a la que compro</th>
+            <th>Total</th>
             <th>Fecha</th>
             <th>Opciones</th>
         </tr>
@@ -31,6 +32,15 @@
             {"data":"id"},
             {"data":"buyer"},
             {"data":"purchase"},
+            {"data":"total",
+                render: function(data,type,row){
+                    
+                    let num = new Intl.NumberFormat('co-CO').format(row.total)
+                    
+                    
+                    return `<p> ${num}</p>`;
+                }
+            },
             {"data":"creation_date"},
             {
                 data: 'options',
