@@ -268,6 +268,7 @@ class CompraInvoicePrintView(LoginRequiredMixin, View):
         context['total'] = int(query_compra.total_value)
         context['fecha'] = query_compra.creation_date
         context['client'] = query_compra.client_name
+        context['doc'] = query_compra.client_name.identification
 
         return render(request, 'compras/invoice.html', context=context)
 

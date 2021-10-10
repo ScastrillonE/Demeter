@@ -171,7 +171,7 @@ class VentasUpdateView(LoginRequiredMixin,UpdateView):
     
 class VentasDeleteView(LoginRequiredMixin,DeleteView):
     model = Ventas
-    success_url = reverse_lazy('venta_list')
+    success_url = reverse_lazy('ventas_list')
     template_name = 'ventas/delete.html'
     context_object_name = 'obj'
 """ 
