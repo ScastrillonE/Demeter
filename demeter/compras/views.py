@@ -260,7 +260,7 @@ class ComprasDeleteView(LoginRequiredMixin, DeleteView):
 
 class CompraInvoicePrintView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        import babel.numbers
+        #import babel.numbers
         context = {}
         query = DetCompra.objects.filter(compra_id=self.kwargs['pk'])
         query_compra = Compra.objects.get(id=self.kwargs['pk'])
