@@ -218,6 +218,6 @@ function calcular_total_unitario(celda){
     let val_uni = td_list.item(2).getElementsByTagName('input').item(0);
     let total = td_list.item(3).getElementsByTagName('input').item(0);
     let calculo = Number(kilos.value) * Number(val_uni.value);
-    total.value = calculo;
+    total.value = Math.round(calculo,1);
     compras.calculate_total()
 }
